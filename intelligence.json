@@ -24,6 +24,12 @@
       "score_max": 100,
       "score_label": "Moderate",
       "summary": "Meals were generally light and vegetarian but lacked consistent protein, especially at breakfast. Salad before meals was skipped on Day 1. ACV was forgotten on Day 3 and completed on Day 4. Evening meals were sometimes very light or skipped (Day 2: only a small piece of paneer). The client acknowledged not having enough time for meal planning due to school schedule.",
+      "confidence": {
+        "score": 88,
+        "label": "High confidence",
+        "reported_days": 7,
+        "total_days": 8
+      },
       "highlights": [
         {
           "finding": "Salad before lunch not done on Day 1 due to insufficient vegetable stock",
@@ -80,6 +86,12 @@
       "score_max": 100,
       "score_label": "Good",
       "summary": "Exercise was consistent, though often light (household chores, walking). Structured exercise increased from the beginning — Day 4 had 20 min walk+stretch+breathing, Day 5 had 20 min stretch+running, Day 8 had 30 min exercise. Steps were reported on some days only.",
+      "confidence": {
+        "score": 50,
+        "label": "Low confidence — sparse data",
+        "reported_days": 4,
+        "total_days": 8
+      },
       "highlights": [
         {
           "finding": "Day 8 had the best exercise session: 30 minutes structured movement",
@@ -118,6 +130,13 @@
       "score_max": 100,
       "score_label": "Poor",
       "summary": "Sleep was chronically insufficient across the week — mostly around 5 hours per night. Causes included caregiving responsibilities (daughter's exams on Day 1), work stress, and late working habits. Day 8 showed a significant recovery (8 hours), which correlated with much better energy. Chronic sleep deprivation is a primary contributor to fatigue, low energy, and potentially digestive symptoms.",
+      "confidence": {
+        "score": 50,
+        "label": "Low confidence — sparse data",
+        "reported_days": 4,
+        "total_days": 8,
+        "std_dev": 1.2
+      },
       "highlights": [
         {
           "finding": "Day 1: 5 hours sleep due to daughter's exam night",
@@ -170,6 +189,13 @@
       "score_max": 100,
       "score_label": "Moderate",
       "summary": "Water was confirmed on Day 2 (vague), Day 3 (4 litres), Day 8 (3.5 litres). Other days had no water intake data reported. The client acknowledged completing water on Day 2 but without a quantity.",
+      "confidence": {
+        "score": 38,
+        "label": "Low confidence — sparse data",
+        "reported_days": 3,
+        "total_days": 8,
+        "std_dev": 0.4
+      },
       "highlights": [
         {
           "finding": "Day 3: 4 litres — good hydration",

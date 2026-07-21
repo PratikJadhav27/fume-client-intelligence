@@ -1089,3 +1089,45 @@ body {
   font-weight: 800;
   color: var(--text-primary);
 }
+
+/* ===========================
+   CONFIDENCE CALIBRATION
+   =========================== */
+.confidence-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-top: 8px;
+}
+.confidence-high { background: var(--teal-dim); color: var(--teal); border: 1px solid rgba(0, 212, 170, 0.2); }
+.confidence-moderate { background: var(--amber-dim); color: var(--amber); border: 1px solid rgba(245, 158, 11, 0.2); }
+.confidence-low { background: var(--red-dim); color: var(--red); border: 1px solid rgba(239, 68, 68, 0.2); }
+
+.confidence-note {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.uncertainty-marker {
+  font-size: 0.75em;
+  color: var(--text-muted);
+  font-weight: normal;
+  margin-left: 2px;
+}
+.tracker-cell.missing-data {
+  background: repeating-linear-gradient(
+    45deg,
+    var(--bg-elevated),
+    var(--bg-elevated) 10px,
+    var(--bg-surface) 10px,
+    var(--bg-surface) 20px
+  );
+}
