@@ -171,6 +171,16 @@ function renderDimension(dimKey) {
         <div style="flex:1;min-width:200px;">
           <div style="font-size:15px;font-weight:700;color:var(--text-primary);margin-bottom:8px;">${d.label}</div>
           <div style="font-size:13px;color:var(--text-secondary);line-height:1.7;">${escHtml(d.summary)}</div>
+          ${d.confidence ? `
+            <div style="margin-top:12px;">
+              <div class="confidence-chip ${d.confidence.score >= 80 ? 'confidence-high' : d.confidence.score >= 60 ? 'confidence-moderate' : 'confidence-low'}">
+                ${d.confidence.score >= 80 ? '🟢' : d.confidence.score >= 60 ? '🟡' : '🔴'} ${d.confidence.label}
+              </div>
+              <div class="confidence-note" style="margin-top:4px;">
+                Based on ${d.confidence.reported_days} of ${d.confidence.total_days} days reported. ${d.confidence.std_dev ? `(Std Dev: ±${d.confidence.std_dev})` : ''}
+              </div>
+            </div>
+          ` : ''}
         </div>
       </div>
     </div>`;
@@ -426,13 +436,13 @@ function renderTracker() {
     return `
       <tr>
         <td><span class="tracker-day-label">Day ${d.day}</span></td>
-        <td>${sleepLabel}</td>
-        <td>${waterLabel}</td>
-        <td>${stepsLabel}</td>
-        <td><span style="font-size:12px;color:var(--text-secondary)">${escHtml(d.exercise || '—')}</span></td>
-        <td><span style="font-size:12px;color:${moodColor}">${escHtml(d.mood || '—')}</span></td>
-        <td>${acv}</td>
-        <td>${symptoms}</td>
+        <td class="${d.sleep === null ? 'missing-data' : ''}">${sleepLabel}</td>
+        <td class="${d.water === null ? 'missing-data' : ''}">${waterLabel}</td>
+        <td class="${d.steps === null ? 'missing-data' : ''}">${stepsLabel}</td>
+        <td class="${!d.exercise ? 'missing-data' : ''}"><span style="font-size:12px;color:var(--text-secondary)">${escHtml(d.exercise || '—')}</span></td>
+        <td class="${!d.mood ? 'missing-data' : ''}"><span style="font-size:12px;color:${moodColor}">${escHtml(d.mood || '—')}</span></td>
+        <td class="${d.acv === null ? 'missing-data' : ''}">${acv}</td>
+        <td class="${d.symptoms.length === 0 ? 'missing-data' : ''}">${symptoms}</td>
       </tr>`;
   }).join('');
 
