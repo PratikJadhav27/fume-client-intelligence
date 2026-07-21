@@ -1,0 +1,491 @@
+{
+  "metadata": {
+    "client_id": "CLIENT_001",
+    "client_display_name": "Anonymous Client",
+    "coach_id": "COACH_001",
+    "week_label": "Week 1 (Day 1 – Day 8)",
+    "generated_at": "2026-07-21T10:00:00Z",
+    "source_file": "Day 1.md",
+    "review_status": "PENDING",
+    "model_version": "analysis-v1.0"
+  },
+
+  "weekly_summary": {
+    "text": "The client completed her first week of wellness coaching while managing a demanding dual role as a school teacher and household caregiver. Sleep was consistently below 7 hours (avg ~5.5 hrs) across most days, with one recovery night of 8 hours on Day 8. Persistent digestive symptoms (acidity, bloating) were present through most of the week. A critical stress incident on Day 7 — where the client fell asleep during a work meeting — represents the highest-severity risk flag of the week. The week ended on a positive note with improved sleep, energy, and 30 minutes of structured exercise on Day 8. Key challenges remain: inconsistent meals due to school schedule, low protein intake, and chronic sleep deprivation.",
+    "confidence": "HIGH",
+    "type": "AI_INFERRED",
+    "evidence_refs": ["D1_ALL", "D7_STRESS", "D8_ALL"]
+  },
+
+  "dimensions": {
+    "nutrition": {
+      "label": "Nutrition Adherence",
+      "score": 55,
+      "score_max": 100,
+      "score_label": "Moderate",
+      "summary": "Meals were generally light and vegetarian but lacked consistent protein, especially at breakfast. Salad before meals was skipped on Day 1. ACV was forgotten on Day 3 and completed on Day 4. Evening meals were sometimes very light or skipped (Day 2: only a small piece of paneer). The client acknowledged not having enough time for meal planning due to school schedule.",
+      "highlights": [
+        {
+          "finding": "Salad before lunch not done on Day 1 due to insufficient vegetable stock",
+          "type": "CONFIRMED",
+          "severity": "LOW",
+          "evidence": "Day 1 – Client: 'No. I still need to stock vegetables properly. Will do it tomorrow.'"
+        },
+        {
+          "finding": "Evening meal very light on Day 2 (only a small piece of paneer) — coach flagged meal-skipping risk",
+          "type": "CONFIRMED",
+          "severity": "MEDIUM",
+          "evidence": "Day 2 – Client: 'Didn't eat much in the evening. Just a small piece of paneer.' Coach: 'Please don't skip meals completely. Try to keep the meals simple.'"
+        },
+        {
+          "finding": "ACV compliance: missed Day 3, completed Day 4",
+          "type": "CONFIRMED",
+          "severity": "LOW",
+          "evidence": "Day 3 – Client: 'Forgot ACV today. Not yet in the habit.' | Day 4 – Client: 'ACV done today.'"
+        },
+        {
+          "finding": "Protein consistently low at breakfast across multiple days",
+          "type": "AI_INFERRED",
+          "severity": "MEDIUM",
+          "evidence": "Day 5 – Coach: 'Protein seems low in breakfast on some days.' Client: 'I didn't have sprouts today.' Day 6 – Coach: 'Protein was also missing.'"
+        },
+        {
+          "finding": "Meal planning is a core barrier — client explicitly stated she does not have enough time",
+          "type": "CLIENT_REPORTED",
+          "severity": "HIGH",
+          "evidence": "Day 6 – Client: 'I am not getting enough time to plan meals. Next week should be easier.'"
+        },
+        {
+          "finding": "Client reported eating 'almost half' of usual intake on Day 5 — restricting excessively",
+          "type": "CLIENT_REPORTED",
+          "severity": "MEDIUM",
+          "evidence": "Day 5 – Client: 'Weight seems slightly up even though I'm eating almost half of what I used to eat.'"
+        }
+      ],
+      "days_data": {
+        "day1": { "breakfast": "Tea + soaked nuts", "lunch": "Kadhi with soya + green vegetables", "dinner": "MISSING", "type": "CLIENT_REPORTED" },
+        "day2": { "breakfast": "Tea (1 cup) + 1 apple", "lunch": "MISSING", "dinner": "Small piece of paneer", "type": "CLIENT_REPORTED" },
+        "day3": { "breakfast": "Coconut water + tea + prunes + seeds", "lunch": "Vegetables + curd + some protein (vague)", "dinner": "MISSING", "type": "CLIENT_REPORTED" },
+        "day4": { "breakfast": "1.5 vegetable chapatis + seeds + ajwain + tea", "lunch": "Carried to school (details unknown)", "dinner": "MISSING", "type": "CLIENT_REPORTED" },
+        "day5": { "breakfast": "No sprouts (ordered)", "lunch": "Roasted chana at school", "dinner": "MISSING", "type": "CLIENT_REPORTED" },
+        "day6": { "breakfast": "MISSING", "lunch": "Roasted chana + kala chana", "dinner": "MISSING", "type": "CLIENT_REPORTED" },
+        "day7": { "breakfast": "Okay (vague)", "lunch": "Okay (vague)", "dinner": "MISSING", "type": "CLIENT_REPORTED" },
+        "day8": { "breakfast": "MISSING", "lunch": "MISSING", "dinner": "MISSING", "type": "MISSING" }
+      }
+    },
+
+    "exercise": {
+      "label": "Exercise / Steps",
+      "score": 62,
+      "score_max": 100,
+      "score_label": "Good",
+      "summary": "Exercise was consistent, though often light (household chores, walking). Structured exercise increased from the beginning — Day 4 had 20 min walk+stretch+breathing, Day 5 had 20 min stretch+running, Day 8 had 30 min exercise. Steps were reported on some days only.",
+      "highlights": [
+        {
+          "finding": "Day 8 had the best exercise session: 30 minutes structured movement",
+          "type": "CLIENT_REPORTED",
+          "severity": "POSITIVE",
+          "evidence": "Day 8 – Client: 'Did 30 minutes exercise.'"
+        },
+        {
+          "finding": "Day 1 post-meal walk of 15 minutes — good habit maintained",
+          "type": "CLIENT_REPORTED",
+          "severity": "POSITIVE",
+          "evidence": "Day 1 – Coach: 'Did you walk after meals?' Client: 'Yes, around 15 minutes.'"
+        },
+        {
+          "finding": "Surya Namaskar practiced on Day 1 — good incorporation of structured exercise",
+          "type": "CLIENT_REPORTED",
+          "severity": "POSITIVE",
+          "evidence": "Day 1 – Client: 'Did some mopping, sweeping, Surya Namaskar and walking inside the house.'"
+        }
+      ],
+      "steps_log": {
+        "day1": { "value": null, "label": "MISSING", "type": "MISSING" },
+        "day2": { "value": null, "label": "MISSING", "type": "MISSING" },
+        "day3": { "value": 8000, "label": "~8,000", "type": "CLIENT_REPORTED" },
+        "day4": { "value": 4500, "label": "4,500 (partial day)", "type": "CLIENT_REPORTED" },
+        "day5": { "value": null, "label": "MISSING", "type": "MISSING" },
+        "day6": { "value": null, "label": "MISSING", "type": "MISSING" },
+        "day7": { "value": 6000, "label": "6,000", "type": "CLIENT_REPORTED" },
+        "day8": { "value": 8000, "label": "~8,000", "type": "CLIENT_REPORTED" }
+      }
+    },
+
+    "sleep": {
+      "label": "Sleep",
+      "score": 40,
+      "score_max": 100,
+      "score_label": "Poor",
+      "summary": "Sleep was chronically insufficient across the week — mostly around 5 hours per night. Causes included caregiving responsibilities (daughter's exams on Day 1), work stress, and late working habits. Day 8 showed a significant recovery (8 hours), which correlated with much better energy. Chronic sleep deprivation is a primary contributor to fatigue, low energy, and potentially digestive symptoms.",
+      "highlights": [
+        {
+          "finding": "Day 1: 5 hours sleep due to daughter's exam night",
+          "type": "CLIENT_REPORTED",
+          "severity": "MEDIUM",
+          "evidence": "Day 1 – Client: 'Slept only around 5 hours last night. Daughter had exams, so I was awake late.'"
+        },
+        {
+          "finding": "Day 3: 5 hours sleep",
+          "type": "CLIENT_REPORTED",
+          "severity": "MEDIUM",
+          "evidence": "Day 3 – Accountability Coach update: 'Sleep 5 hours'"
+        },
+        {
+          "finding": "Day 7: 5.5 hours sleep with extreme daytime fatigue",
+          "type": "CLIENT_REPORTED",
+          "severity": "HIGH",
+          "evidence": "Day 7 – Client: 'Sleep around 5.5 hours.' + 'During a meeting today I was so tired that my head went down on the table and I actually slept for a few seconds.'"
+        },
+        {
+          "finding": "Day 8: 8 hours sleep — full recovery night, significantly improved energy",
+          "type": "CLIENT_REPORTED",
+          "severity": "POSITIVE",
+          "evidence": "Day 8 – Client: 'Slept better last night, around 8 hours. Energy feels much better today.'"
+        },
+        {
+          "finding": "Sleep data missing for Days 2, 4, 5, 6",
+          "type": "MISSING",
+          "severity": "LOW",
+          "evidence": "No sleep data reported on these days."
+        }
+      ],
+      "sleep_log": {
+        "day1": { "hours": 5, "type": "CLIENT_REPORTED" },
+        "day2": { "hours": null, "type": "MISSING" },
+        "day3": { "hours": 5, "type": "CLIENT_REPORTED" },
+        "day4": { "hours": null, "type": "MISSING" },
+        "day5": { "hours": null, "type": "MISSING" },
+        "day6": { "hours": null, "type": "MISSING" },
+        "day7": { "hours": 5.5, "type": "CLIENT_REPORTED" },
+        "day8": { "hours": 8, "type": "CLIENT_REPORTED" }
+      },
+      "weekly_avg_known_days": 5.9,
+      "weekly_avg_note": "Average calculated only from reported days (Days 1, 3, 7, 8). Actual average may differ."
+    },
+
+    "water": {
+      "label": "Water Intake",
+      "score": 55,
+      "score_max": 100,
+      "score_label": "Moderate",
+      "summary": "Water was confirmed on Day 2 (vague), Day 3 (4 litres), Day 8 (3.5 litres). Other days had no water intake data reported. The client acknowledged completing water on Day 2 but without a quantity.",
+      "highlights": [
+        {
+          "finding": "Day 3: 4 litres — good hydration",
+          "type": "CLIENT_REPORTED",
+          "severity": "POSITIVE",
+          "evidence": "Day 3 – Accountability Coach: 'Water 4 litres'"
+        },
+        {
+          "finding": "Day 8: 3.5 litres — adequate hydration",
+          "type": "CLIENT_REPORTED",
+          "severity": "POSITIVE",
+          "evidence": "Day 8 – Client: 'Water around 3.5 litres.'"
+        },
+        {
+          "finding": "Day 2: water done but quantity unknown",
+          "type": "CLIENT_REPORTED",
+          "severity": "LOW",
+          "evidence": "Day 2 – Client: 'Walk and water done.'"
+        },
+        {
+          "finding": "Water data missing for Days 1, 4, 5, 6, 7",
+          "type": "MISSING",
+          "severity": "MEDIUM",
+          "evidence": "No water intake mentioned on these days."
+        }
+      ],
+      "water_log": {
+        "day1": { "litres": null, "type": "MISSING" },
+        "day2": { "litres": null, "confirmed": true, "label": "Done (qty unknown)", "type": "CLIENT_REPORTED" },
+        "day3": { "litres": 4, "type": "CLIENT_REPORTED" },
+        "day4": { "litres": null, "type": "MISSING" },
+        "day5": { "litres": null, "type": "MISSING" },
+        "day6": { "litres": null, "type": "MISSING" },
+        "day7": { "litres": null, "type": "MISSING" },
+        "day8": { "litres": 3.5, "type": "CLIENT_REPORTED" }
+      }
+    },
+
+    "symptoms": {
+      "label": "Symptoms",
+      "score": 35,
+      "score_max": 100,
+      "score_label": "Concerning",
+      "summary": "Acidity started on Day 1 (attributed to late sleep and heavy work, not food). Bloating appeared on Day 2 and recurred on Day 6 and Day 8. Weight was reported as feeling 'slightly up' on Day 5. These digestive symptoms appear to be linked to irregular meal timing, meal skipping, and chronic sleep deprivation rather than any specific food item.",
+      "highlights": [
+        {
+          "finding": "Acidity present since Day 1 morning — attributed to late sleep and overwork, not food",
+          "type": "CLIENT_REPORTED",
+          "severity": "MEDIUM",
+          "evidence": "Day 1 – Client: 'Feeling some acidity since morning.' Coach: 'Did it start after eating something?' Client: 'No. Slept very late and did a lot of work today. Got up with acidity.'"
+        },
+        {
+          "finding": "Bloating reported on Day 2 alongside acidity",
+          "type": "CLIENT_REPORTED",
+          "severity": "MEDIUM",
+          "evidence": "Day 2 – Client: 'Still having acidity and bloating.'"
+        },
+        {
+          "finding": "Bloating returned on Day 6 with low energy",
+          "type": "CLIENT_REPORTED",
+          "severity": "MEDIUM",
+          "evidence": "Day 6 – Client: 'Bloating is back and I feel like I have gained weight.'"
+        },
+        {
+          "finding": "Bloating persists on Day 8 despite overall improvement",
+          "type": "CLIENT_REPORTED",
+          "severity": "LOW",
+          "evidence": "Day 8 – Client: 'Still having bloating on and off.'"
+        },
+        {
+          "finding": "AI Inference: Bloating and acidity may be linked to irregular meal timing, light evening meals, and sleep deprivation — not an isolated dietary issue",
+          "type": "AI_INFERRED",
+          "severity": "MEDIUM",
+          "evidence": "Pattern across Days 1–8: acidity on Day 1 (late sleep), bloating Day 2 (light dinner), recurrence Day 6 (skipped meals), persistence Day 8 (ongoing)"
+        }
+      ]
+    },
+
+    "stress_mood": {
+      "label": "Stress & Mood",
+      "score": 35,
+      "score_max": 100,
+      "score_label": "High Stress",
+      "summary": "The week started positively (Day 1: 'generally feeling happy'). Stress escalated sharply on Day 7 due to work pressure and office politics, resulting in extreme fatigue (falling asleep in a meeting). Day 8 showed recovery after better sleep. Stress appears to be a significant and underaddressed factor in the client's overall wellness journey.",
+      "highlights": [
+        {
+          "finding": "Day 1: Client reported feeling happy overall",
+          "type": "CLIENT_REPORTED",
+          "severity": "POSITIVE",
+          "evidence": "Day 1 – Client: 'Generally feeling happy today.'"
+        },
+        {
+          "finding": "Day 6: Energy very low, bloating back — likely linked to accumulated stress and poor sleep",
+          "type": "AI_INFERRED",
+          "severity": "MEDIUM",
+          "evidence": "Day 6 – Client: 'Yesterday energy was very good. Today feeling low again. Bloating is back.'"
+        },
+        {
+          "finding": "Day 7: Office politics and pressure causing extreme fatigue — CRITICAL",
+          "type": "CLIENT_REPORTED",
+          "severity": "CRITICAL",
+          "evidence": "Day 7 – Client: 'There is a lot of office pressure and politics going on.' + 'During a meeting today I was so tired that my head went down on the table and I actually slept for a few seconds.' + 'Feeling very low.' + 'I feel I can sleep for days.'"
+        },
+        {
+          "finding": "Day 8: Recovery — energy much better after full night of sleep",
+          "type": "CLIENT_REPORTED",
+          "severity": "POSITIVE",
+          "evidence": "Day 8 – Client: 'Energy feels much better today. Overall energy is much better than before.'"
+        }
+      ]
+    },
+
+    "engagement": {
+      "label": "Engagement Level",
+      "score": 78,
+      "score_max": 100,
+      "score_label": "High",
+      "summary": "The client engaged daily with the coach, shared detailed updates, responded to questions promptly, and acknowledged areas for improvement without defensiveness. She also asked food-related questions proactively (banana stem juice on Day 2). Only one missed call (Day 7, explained by work stress). Engagement is a key strength and a strong predictor of program success.",
+      "highlights": [
+        {
+          "finding": "Client actively shared daily updates across all 8 days",
+          "type": "CONFIRMED",
+          "severity": "POSITIVE",
+          "evidence": "Consistent messages across Day 1 to Day 8"
+        },
+        {
+          "finding": "Client proactively asked about food choices (banana stem juice on Day 2)",
+          "type": "CONFIRMED",
+          "severity": "POSITIVE",
+          "evidence": "Day 2 – Client: 'Can I have banana stem, mint and ginger juice?'"
+        },
+        {
+          "finding": "Client missed one coach call on Day 7 but explained reason",
+          "type": "CONFIRMED",
+          "severity": "LOW",
+          "evidence": "Day 7 – Client: 'Sorry I missed your call. There was a stressful situation at work.'"
+        },
+        {
+          "finding": "Client acknowledged habit gaps without defensiveness (ACV, salad, meal planning)",
+          "type": "AI_INFERRED",
+          "severity": "POSITIVE",
+          "evidence": "Multiple instances: Day 3 (forgot ACV), Day 1 (no salad), Day 6 (time constraints for meal planning)"
+        }
+      ]
+    }
+  },
+
+  "key_barriers": [
+    {
+      "id": "B1",
+      "barrier": "Chronic sleep deprivation (avg ~5.5 hrs/night on known days)",
+      "type": "CLIENT_REPORTED",
+      "severity": "HIGH",
+      "impact": "Directly linked to acidity, bloating, low energy, and work fatigue. Sleep on Day 8 (8 hrs) was the single biggest driver of positive outcomes.",
+      "evidence": "Day 1: 5 hrs; Day 3: 5 hrs; Day 7: 5.5 hrs; Day 8: 8 hrs. Coach Day 7: 'We also need to look at your sleep and stress more carefully.'"
+    },
+    {
+      "id": "B2",
+      "barrier": "School schedule disrupting meal planning and timing",
+      "type": "CLIENT_REPORTED",
+      "severity": "HIGH",
+      "impact": "Client returned to school on Day 3 with very hectic mornings — breakfast became inadequate. Meal prep time is limited during school days.",
+      "evidence": "Day 3: 'Very hectic morning. I didn't get time.' | Day 6: 'I am not getting enough time to plan meals.' | Coach Day 3: 'Slowly we need to adjust the routine around your school schedule also.'"
+    },
+    {
+      "id": "B3",
+      "barrier": "Work stress (office politics, pressure) — emerging mental health concern",
+      "type": "CLIENT_REPORTED",
+      "severity": "CRITICAL",
+      "impact": "Work stress peaked on Day 7, causing severe fatigue and emotional distress. This is outside the typical nutrition/fitness scope but significantly impacts the program.",
+      "evidence": "Day 7: 'There is a lot of office pressure and politics going on.' + 'I actually slept for a few seconds during a meeting.' + 'Feeling very low. I feel I can sleep for days.'"
+    },
+    {
+      "id": "B4",
+      "barrier": "Insufficient protein intake at breakfast",
+      "type": "AI_INFERRED",
+      "severity": "MEDIUM",
+      "impact": "Coach flagged protein gaps on Day 5. Low protein may contribute to energy dips, weight frustration, and inadequate satiety.",
+      "evidence": "Day 5 – Coach: 'Protein seems low in breakfast on some days.' | Day 6 – Coach: 'Food intake was low today. Protein was also missing.'"
+    }
+  ],
+
+  "pending_actions": [
+    {
+      "id": "PA1",
+      "action": "Set reminder for ACV around meal timings",
+      "owner": "CLIENT",
+      "due": "Day 9 onwards",
+      "status": "IN_PROGRESS",
+      "source": "Coach instruction Day 3",
+      "evidence": "Day 3 – Coach: 'Set a reminder around meal timings.' Client: 'Yes, will do.'"
+    },
+    {
+      "id": "PA2",
+      "action": "Stock vegetables at home for salads",
+      "owner": "CLIENT",
+      "due": "Day 2 (overdue — not confirmed completed)",
+      "status": "UNKNOWN",
+      "source": "Client self-commitment Day 1",
+      "evidence": "Day 1 – Client: 'I still need to stock vegetables properly. Will do it tomorrow.'"
+    },
+    {
+      "id": "PA3",
+      "action": "Order and start using sprouts for breakfast protein",
+      "owner": "CLIENT",
+      "due": "Day 6+",
+      "status": "IN_PROGRESS",
+      "source": "Client Day 5",
+      "evidence": "Day 5 – Client: 'I didn't have sprouts today. Have ordered them.'"
+    },
+    {
+      "id": "PA4",
+      "action": "Adjust meal routine around school schedule",
+      "owner": "COACH + CLIENT",
+      "due": "Ongoing",
+      "status": "OPEN",
+      "source": "Coach Day 3",
+      "evidence": "Day 3 – Coach: 'Slowly we need to adjust the routine around your school schedule also.'"
+    },
+    {
+      "id": "PA5",
+      "action": "Address sleep and stress as primary intervention points",
+      "owner": "COACH",
+      "due": "Immediately",
+      "status": "OPEN",
+      "source": "Coach Day 7",
+      "evidence": "Day 7 – Coach: 'Please rest today. We also need to look at your sleep and stress more carefully.'"
+    }
+  ],
+
+  "risk_flags": [
+    {
+      "id": "RF1",
+      "flag": "Client fell asleep during a work meeting on Day 7 — possible acute fatigue or burnout symptom",
+      "severity": "CRITICAL",
+      "type": "CLIENT_REPORTED",
+      "category": "PHYSICAL_MENTAL_HEALTH",
+      "action_required": "Coach should have a dedicated 1:1 conversation about stress levels and consider referral to mental health support if symptoms persist.",
+      "evidence": "Day 7 – Client: 'During a meeting today I was so tired that my head went down on the table and I actually slept for a few seconds.' + 'I feel I can sleep for days.'"
+    },
+    {
+      "id": "RF2",
+      "flag": "Persistent digestive symptoms (acidity + bloating) across 7 of 8 days — may indicate underlying GI issue",
+      "severity": "HIGH",
+      "type": "CLIENT_REPORTED",
+      "category": "PHYSICAL_HEALTH",
+      "action_required": "If bloating and acidity persist beyond Week 2, recommend consulting a physician to rule out GI conditions.",
+      "evidence": "Day 1: acidity | Day 2: acidity + bloating | Day 6: bloating back | Day 8: bloating on and off"
+    },
+    {
+      "id": "RF3",
+      "flag": "Possible food restriction — client eating 'almost half' of usual intake and experiencing weight frustration",
+      "severity": "MEDIUM",
+      "type": "CLIENT_REPORTED",
+      "category": "NUTRITION",
+      "action_required": "Reinforce that caloric restriction without adequate protein will slow metabolism and cause muscle loss. Reframe weight as a lagging indicator.",
+      "evidence": "Day 5 – Client: 'Weight seems slightly up even though I'm eating almost half of what I used to eat.' Coach: 'It is not always about eating less. Your body needs adequate nutrition.'"
+    },
+    {
+      "id": "RF4",
+      "flag": "Sleep consistently below 6 hours on most reported days — chronic deprivation threshold",
+      "severity": "HIGH",
+      "type": "AI_INFERRED",
+      "category": "SLEEP",
+      "action_required": "Sleep hygiene protocol needed. Consider discussing daughter's exam schedule, work hours, and a hard cutoff time for screens/work.",
+      "evidence": "Day 1: 5 hrs; Day 3: 5 hrs; Day 7: 5.5 hrs. Pattern suggests structural barriers to adequate sleep."
+    }
+  ],
+
+  "recommended_next_action": {
+    "primary": {
+      "action": "Schedule a dedicated 15-minute stress and sleep check-in with the client before the next week begins",
+      "rationale": "Day 7's extreme fatigue incident (sleeping during a meeting) combined with chronic 5-hour sleep nights indicates the client's current load is unsustainable. Nutrition coaching alone will be insufficient if the underlying stress and sleep deficits are not addressed. This week's positive Day 8 outcome (8 hrs sleep → much better energy) empirically proves that sleep is the highest-leverage intervention for this client.",
+      "type": "AI_INFERRED",
+      "evidence": "Day 7 – Client: 'I feel I can sleep for days.' | Day 8 – Client: 'Slept better last night, around 8 hours. Energy feels much better today.'"
+    },
+    "secondary": [
+      {
+        "action": "Create a simplified 3-day school-day meal template for the client to reduce cognitive load in meal planning",
+        "rationale": "Client explicitly stated time for meal planning is the main barrier. A pre-planned template removes the decision-making effort.",
+        "type": "AI_INFERRED",
+        "evidence": "Day 6 – Client: 'I am not getting enough time to plan meals.' | Day 3 – Coach: 'Slowly we need to adjust the routine around your school schedule also.'"
+      },
+      {
+        "action": "Confirm vegetable restocking and salad habit for Week 2",
+        "rationale": "Salad before meals was a coaching goal not followed on Day 1. No follow-up confirmation received.",
+        "type": "AI_INFERRED",
+        "evidence": "Day 1 – Client: 'Will do it tomorrow.' No confirmation in subsequent days."
+      }
+    ]
+  },
+
+  "day_tracker": [
+    { "day": 1, "sleep": 5, "water": null, "steps": null, "exercise": "Light (Surya Namaskar + walking)", "mood": "Happy", "acv": false, "symptoms": ["Acidity"] },
+    { "day": 2, "sleep": null, "water": "Done", "steps": null, "exercise": "Walk (done)", "mood": "Neutral", "acv": null, "symptoms": ["Acidity", "Bloating"] },
+    { "day": 3, "sleep": 5, "water": 4, "steps": 8000, "exercise": "Walking only", "mood": "Hectic", "acv": false, "symptoms": [] },
+    { "day": 4, "sleep": null, "water": null, "steps": "4500+", "exercise": "20 min walk + stretch + breathing", "mood": "Really good", "acv": true, "symptoms": [] },
+    { "day": 5, "sleep": null, "water": null, "steps": null, "exercise": "20 min stretch + running", "mood": "Frustrated (weight)", "acv": null, "symptoms": ["Weight frustration"] },
+    { "day": 6, "sleep": null, "water": null, "steps": null, "exercise": null, "mood": "Low energy", "acv": null, "symptoms": ["Bloating", "Low energy"] },
+    { "day": 7, "sleep": 5.5, "water": null, "steps": 6000, "exercise": "Mopping + sweeping", "mood": "Very low / Stressed", "acv": null, "symptoms": ["Extreme fatigue", "Stress"] },
+    { "day": 8, "sleep": 8, "water": 3.5, "steps": 8000, "exercise": "30 min", "mood": "Much better", "acv": null, "symptoms": ["Bloating (mild)"] }
+  ],
+
+  "client_weight": {
+    "current": 83,
+    "unit": "kg",
+    "trend": "UNKNOWN",
+    "baseline": null,
+    "note": "Only one weight measurement reported (Day 8). Client reported subjective feeling of weight gain on Day 5 but this is self-perception, not a measured value.",
+    "type": "CLIENT_REPORTED"
+  },
+
+  "review": {
+    "status": "PENDING",
+    "coach_notes": "",
+    "reviewed_by": null,
+    "reviewed_at": null
+  }
+}

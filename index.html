@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FUME – Client Intelligence Platform</title>
+  <meta name="description" content="AI-powered client wellness intelligence dashboard for health coaches. Evidence-grounded analysis of client-coach conversations." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+<div class="loading-bar" id="loadingBar"></div>
+
+<!-- APP LAYOUT -->
+<div class="app-layout">
+
+  <!-- TOP NAV -->
+  <nav class="top-nav">
+    <div class="nav-logo">
+      <div class="nav-logo-icon">🔥</div>
+      FUME Intelligence
+    </div>
+    <span class="nav-week-label">Week 1 · Day 1–8 · Anonymous Client</span>
+    <div class="nav-divider"></div>
+    <div class="nav-badge pending" id="navReviewBadge">
+      <div class="nav-badge-dot"></div>
+      <span id="navReviewText">Awaiting Review</span>
+    </div>
+  </nav>
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section-label">Overview</div>
+    <a class="sidebar-item active" id="nav-summary" onclick="navigate('summary')">
+      <span class="icon">📋</span> Weekly Summary
+    </a>
+
+    <div class="sidebar-section-label">Dimensions</div>
+    <a class="sidebar-item" id="nav-nutrition" onclick="navigate('nutrition')">
+      <span class="icon">🥗</span> Nutrition
+    </a>
+    <a class="sidebar-item" id="nav-exercise" onclick="navigate('exercise')">
+      <span class="icon">🏃</span> Exercise & Steps
+    </a>
+    <a class="sidebar-item" id="nav-sleep" onclick="navigate('sleep')">
+      <span class="icon">😴</span> Sleep
+    </a>
+    <a class="sidebar-item" id="nav-water" onclick="navigate('water')">
+      <span class="icon">💧</span> Water Intake
+    </a>
+    <a class="sidebar-item" id="nav-symptoms" onclick="navigate('symptoms')">
+      <span class="icon">🩺</span> Symptoms
+    </a>
+    <a class="sidebar-item" id="nav-stress" onclick="navigate('stress')">
+      <span class="icon">🧠</span> Stress & Mood
+    </a>
+    <a class="sidebar-item" id="nav-engagement" onclick="navigate('engagement')">
+      <span class="icon">📊</span> Engagement
+    </a>
+
+    <div class="sidebar-section-label">Intelligence</div>
+    <a class="sidebar-item" id="nav-barriers" onclick="navigate('barriers')">
+      <span class="icon">🚧</span> Key Barriers
+    </a>
+    <a class="sidebar-item" id="nav-actions" onclick="navigate('actions')">
+      <span class="icon">✅</span> Pending Actions
+    </a>
+    <a class="sidebar-item" id="nav-risks" onclick="navigate('risks')">
+      <span class="icon">⚠️</span> Risk Flags
+      <span class="badge-count" id="riskCount">4</span>
+    </a>
+    <a class="sidebar-item" id="nav-recommendation" onclick="navigate('recommendation')">
+      <span class="icon">💡</span> Recommendation
+    </a>
+
+    <div class="sidebar-section-label">Data</div>
+    <a class="sidebar-item" id="nav-tracker" onclick="navigate('tracker')">
+      <span class="icon">📅</span> Day Tracker
+    </a>
+    <a class="sidebar-item" id="nav-review" onclick="navigate('review')">
+      <span class="icon">👁️</span> Coach Review
+    </a>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="main-content">
+
+    <!-- ========================= -->
+    <!-- SECTION: WEEKLY SUMMARY   -->
+    <!-- ========================= -->
+    <section class="page-section active" id="section-summary">
+      <div class="section-header">
+        <h2>📋 Weekly Summary</h2>
+        <p>AI-generated intelligence from 8-day client-coach conversation</p>
+      </div>
+
+      <!-- LEGEND -->
+      <div class="legend">
+        <div class="legend-item"><span class="type-badge confirmed legend-badge">✅ Confirmed</span> Explicitly stated, unambiguous</div>
+        <div class="legend-item"><span class="type-badge client-reported legend-badge">💬 Client-Reported</span> Self-reported, may be estimated</div>
+        <div class="legend-item"><span class="type-badge ai-inferred legend-badge">🤖 AI Inferred</span> Derived from context</div>
+        <div class="legend-item"><span class="type-badge missing legend-badge">❓ Missing</span> Not mentioned or unavailable</div>
+      </div>
+
+      <!-- SUMMARY CARD -->
+      <div class="summary-card">
+        <div class="card-title">🧾 WEEKLY NARRATIVE</div>
+        <div class="summary-text" id="summaryText"></div>
+        <div class="summary-meta">
+          <span class="type-badge ai-inferred">🤖 AI Inferred</span>
+          <span style="font-size:11px;color:var(--text-muted);">Generated from 8-day conversation · Week 1</span>
+        </div>
+      </div>
+
+      <!-- STATS ROW -->
+      <div class="stats-row">
+        <div class="stat-card">
+          <div class="stat-value">5.9<span class="stat-unit">h</span></div>
+          <div class="stat-label">Avg Sleep</div>
+          <div class="stat-note">Known days only (4 of 8)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">3.75<span class="stat-unit">L</span></div>
+          <div class="stat-label">Avg Water</div>
+          <div class="stat-note">Known days only (2 of 8)</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">7k<span class="stat-unit">+</span></div>
+          <div class="stat-label">Avg Steps</div>
+          <div class="stat-note">Days 3, 7, 8 reported</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value">83<span class="stat-unit">kg</span></div>
+          <div class="stat-label">Current Weight</div>
+          <div class="stat-note">Reported Day 8 only</div>
+        </div>
+      </div>
+
+      <!-- SCORES GRID -->
+      <div class="section-header" style="margin-bottom:16px;">
+        <h2 style="font-size:16px;">Dimension Health Scores</h2>
+      </div>
+      <div class="scores-grid" id="scoresGrid"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: NUTRITION        -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-nutrition">
+      <div class="section-header">
+        <h2>🥗 Nutrition Adherence</h2>
+        <p>Meal quality, adherence to plan, and identified gaps</p>
+      </div>
+      <div id="nutritionContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: EXERCISE         -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-exercise">
+      <div class="section-header">
+        <h2>🏃 Exercise & Steps</h2>
+        <p>Physical activity across the week</p>
+      </div>
+      <div id="exerciseContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: SLEEP            -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-sleep">
+      <div class="section-header">
+        <h2>😴 Sleep</h2>
+        <p>Sleep duration and quality across the week</p>
+      </div>
+      <div id="sleepContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: WATER            -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-water">
+      <div class="section-header">
+        <h2>💧 Water Intake</h2>
+        <p>Daily hydration tracking</p>
+      </div>
+      <div id="waterContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: SYMPTOMS         -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-symptoms">
+      <div class="section-header">
+        <h2>🩺 Symptoms</h2>
+        <p>Physical symptoms and health observations</p>
+      </div>
+      <div id="symptomsContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: STRESS           -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-stress">
+      <div class="section-header">
+        <h2>🧠 Stress & Mood</h2>
+        <p>Emotional state and stress indicators</p>
+      </div>
+      <div id="stressContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: ENGAGEMENT       -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-engagement">
+      <div class="section-header">
+        <h2>📊 Engagement Level</h2>
+        <p>How actively the client participated in the coaching program</p>
+      </div>
+      <div id="engagementContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: BARRIERS         -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-barriers">
+      <div class="section-header">
+        <h2>🚧 Key Barriers</h2>
+        <p>Primary obstacles to the client's wellness progress</p>
+      </div>
+      <div id="barriersContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: PENDING ACTIONS  -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-actions">
+      <div class="section-header">
+        <h2>✅ Pending Actions</h2>
+        <p>Open commitments and follow-up items for coach and client</p>
+      </div>
+      <div id="actionsContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: RISK FLAGS       -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-risks">
+      <div class="section-header">
+        <h2>⚠️ Risk & Attention Flags</h2>
+        <p>Items requiring immediate or near-term coach attention</p>
+      </div>
+      <div id="risksContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: RECOMMENDATION   -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-recommendation">
+      <div class="section-header">
+        <h2>💡 Recommended Next Actions</h2>
+        <p>AI-suggested actions for the coach based on this week's data</p>
+      </div>
+      <div id="recommendationContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: DAY TRACKER      -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-tracker">
+      <div class="section-header">
+        <h2>📅 Day-by-Day Tracker</h2>
+        <p>Full 8-day breakdown of reported metrics</p>
+      </div>
+      <div id="trackerContent"></div>
+    </section>
+
+    <!-- ========================= -->
+    <!-- SECTION: COACH REVIEW     -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-review">
+      <div class="section-header">
+        <h2>👁️ Coach Review</h2>
+        <p>Review and sign off on this AI-generated intelligence report</p>
+      </div>
+      <div id="reviewContent"></div>
+    </section>
+
+  </main>
+</div>
+
+<!-- TOAST NOTIFICATION -->
+<div class="toast" id="toast"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
