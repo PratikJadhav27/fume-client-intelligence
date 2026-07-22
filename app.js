@@ -828,5 +828,254 @@ function updateLiveBadge() {
   badge.textContent = isLiveData ? '⚡ Live Analysis' : '';
 }
 
+// ─── MULTI-CLIENT SYSTEM ─────────────────────────────────────
+
+// Pre-seeded demo clients
+const DEMO_CLIENTS = [
+  {
+    id: 'CLIENT_001',
+    name: 'Priya M.',
+    role: 'School Teacher',
+    week: 'Week 1',
+    days: 'Day 1–8',
+    avatar: '👩‍🏫',
+    risk_count: 4,
+    engagement: 78,
+    sleep_avg: 5.9,
+    steps_avg: 7333,
+    top_risk: 'CRITICAL',
+    top_risk_label: 'Fell asleep in meeting',
+    scores: { nutrition: 55, exercise: 62, sleep: 40, water: 55, engagement: 78 },
+    sleep_log: [5, null, 5, null, null, null, 5.5, 8],
+    steps_log: [null, null, 8000, 4500, null, null, 6000, 8000],
+    dataKey: 'EMBEDDED'
+  },
+  {
+    id: 'CLIENT_002',
+    name: 'Ananya R.',
+    role: 'Software Engineer',
+    week: 'Week 2',
+    days: 'Day 9–16',
+    avatar: '👩‍💻',
+    risk_count: 2,
+    engagement: 85,
+    sleep_avg: 6.8,
+    steps_avg: 9200,
+    top_risk: 'HIGH',
+    top_risk_label: 'Skipping breakfast 3/7 days',
+    scores: { nutrition: 48, exercise: 75, sleep: 65, water: 70, engagement: 85 },
+    sleep_log: [7, 6.5, 7, null, 6, 7.5, 8, 6],
+    steps_log: [9000, 10000, null, 8500, 9500, null, 10200, 8000],
+    dataKey: 'DEMO_2'
+  },
+  {
+    id: 'CLIENT_003',
+    name: 'Kavya S.',
+    role: 'Home-maker',
+    week: 'Week 1',
+    days: 'Day 1–7',
+    avatar: '👩‍🍳',
+    risk_count: 1,
+    engagement: 92,
+    sleep_avg: 7.5,
+    steps_avg: 6100,
+    top_risk: 'MEDIUM',
+    top_risk_label: 'Low water intake',
+    scores: { nutrition: 72, exercise: 58, sleep: 78, water: 42, engagement: 92 },
+    sleep_log: [7, 8, 7.5, 7, 8, 7, null],
+    steps_log: [5500, 6000, null, 7000, 6500, null, 5800],
+    dataKey: 'DEMO_3'
+  }
+];
+
+let activeClientId = 'CLIENT_001';
+let sleepChartInst = null;
+let stepsChartInst = null;
+
+function getClient(id) {
+  return DEMO_CLIENTS.find(c => c.id === id) || DEMO_CLIENTS[0];
+}
+
+function renderClientsSection() {
+  const grid = document.getElementById('clientsGrid');
+  if (!grid) return;
+
+  grid.innerHTML = DEMO_CLIENTS.map(c => {
+    const isActive = c.id === activeClientId;
+    const riskCls = c.top_risk === 'CRITICAL' ? 'sev-critical' : c.top_risk === 'HIGH' ? 'sev-high' : 'sev-medium';
+    const sleepPct = Math.min((c.sleep_avg / 9) * 100, 100);
+    const engPct = c.engagement;
+
+    return `
+      <div class="client-card ${isActive ? 'active-client' : ''}" onclick="switchClient('${c.id}')">
+        <div class="client-card-header">
+          <div class="client-avatar">${c.avatar}</div>
+          <div class="client-info">
+            <div class="client-name">${c.name} ${isActive ? '<span class="active-tag">● Active</span>' : ''}</div>
+            <div class="client-role">${c.role} · ${c.week}</div>
+          </div>
+          <div class="severity-dot ${riskCls}" style="margin-left:auto;flex-shrink:0;width:10px;height:10px;"></div>
+        </div>
+
+        <div class="client-metrics-row">
+          <div class="client-metric">
+            <div class="client-metric-val">${c.sleep_avg}h</div>
+            <div class="client-metric-lbl">Avg Sleep</div>
+          </div>
+          <div class="client-metric">
+            <div class="client-metric-val">${(c.steps_avg / 1000).toFixed(1)}k</div>
+            <div class="client-metric-lbl">Avg Steps</div>
+          </div>
+          <div class="client-metric">
+            <div class="client-metric-val">${c.engagement}</div>
+            <div class="client-metric-lbl">Engagement</div>
+          </div>
+          <div class="client-metric">
+            <div class="client-metric-val" style="color:var(${c.top_risk === 'CRITICAL' ? '--red' : c.top_risk === 'HIGH' ? '--amber' : '--text-secondary'})">${c.risk_count}</div>
+            <div class="client-metric-lbl">Risk Flags</div>
+          </div>
+        </div>
+
+        <div class="client-risk-label">
+          <span class="severity-dot ${riskCls}" style="width:7px;height:7px;flex-shrink:0;"></span>
+          ${escHtml(c.top_risk_label)}
+        </div>
+
+        <div class="client-score-bars">
+          <div class="score-bar-row">
+            <span>Sleep</span>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:${sleepPct}%;background:${sleepPct < 55 ? 'var(--red)' : sleepPct < 75 ? 'var(--amber)' : 'var(--green)'}"></div></div>
+          </div>
+          <div class="score-bar-row">
+            <span>Engage</span>
+            <div class="score-bar-track"><div class="score-bar-fill" style="width:${engPct}%;background:var(--teal)"></div></div>
+          </div>
+        </div>
+
+        <button class="btn-load-client" onclick="event.stopPropagation();switchClient('${c.id}')">
+          ${isActive ? '✓ Currently Viewing' : '→ Load Report'}
+        </button>
+      </div>`;
+  }).join('');
+
+  renderTrendCharts();
+}
+
+function switchClient(clientId) {
+  activeClientId = clientId;
+  const client = getClient(clientId);
+
+  // For demo: only CLIENT_001 has real data (EMBEDDED_DATA)
+  // Others show a placeholder toast
+  if (client.dataKey === 'EMBEDDED') {
+    DATA = EMBEDDED_DATA;
+    isLiveData = false;
+    reviewState = { status: DATA.review?.status || 'PENDING', notes: '', reviewedAt: null };
+    renderAll();
+    updateLiveBadge();
+  } else {
+    showToast(`📋 ${client.name}'s data would load here in production (connected to backend).`, 'info');
+  }
+
+  // Update nav label
+  const navLabel = document.getElementById('navClientLabel');
+  if (navLabel) navLabel.textContent = `${client.week} · ${client.days} · ${client.name}`;
+
+  renderClientsSection();
+  showToast(`Switched to ${client.name}`, 'success');
+}
+
+function renderTrendCharts() {
+  const client = getClient(activeClientId);
+  const days = client.sleep_log.map((_, i) => `Day ${i + 1}`);
+
+  const chartDefaults = {
+    responsive: true,
+    maintainAspectRatio: true,
+    plugins: {
+      legend: { display: false },
+      tooltip: { backgroundColor: '#1e2433', titleColor: '#e2e8f0', bodyColor: '#94a3b8', borderColor: '#2a3347', borderWidth: 1 }
+    },
+    scales: {
+      x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b', font: { size: 11 } } },
+      y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#64748b', font: { size: 11 } } }
+    }
+  };
+
+  // Destroy old chart instances if they exist
+  if (sleepChartInst) { sleepChartInst.destroy(); sleepChartInst = null; }
+  if (stepsChartInst) { stepsChartInst.destroy(); stepsChartInst = null; }
+
+  const sleepEl = document.getElementById('sleepChart');
+  const stepsEl = document.getElementById('stepsChart');
+  if (!sleepEl || !stepsEl) return;
+
+  // Sleep chart
+  sleepChartInst = new Chart(sleepEl, {
+    type: 'line',
+    data: {
+      labels: days,
+      datasets: [
+        {
+          label: 'Sleep (hrs)',
+          data: client.sleep_log,
+          borderColor: '#00d4aa',
+          backgroundColor: 'rgba(0,212,170,0.08)',
+          pointBackgroundColor: client.sleep_log.map(v => v === null ? 'transparent' : (v >= 7 ? '#10b981' : v >= 6 ? '#f59e0b' : '#ef4444')),
+          pointRadius: 5,
+          tension: 0.35,
+          fill: true,
+          spanGaps: false
+        },
+        {
+          label: '7h target',
+          data: Array(days.length).fill(7),
+          borderColor: 'rgba(16,185,129,0.3)',
+          borderDash: [6, 4],
+          pointRadius: 0,
+          fill: false
+        }
+      ]
+    },
+    options: { ...chartDefaults, scales: { ...chartDefaults.scales, y: { ...chartDefaults.scales.y, min: 0, max: 10, ticks: { ...chartDefaults.scales.y.ticks, callback: v => v + 'h' } } } }
+  });
+
+  // Steps chart
+  stepsChartInst = new Chart(stepsEl, {
+    type: 'bar',
+    data: {
+      labels: days,
+      datasets: [
+        {
+          label: 'Steps',
+          data: client.steps_log,
+          backgroundColor: client.steps_log.map(v => v === null ? 'rgba(100,116,139,0.2)' : (v >= 8000 ? 'rgba(0,212,170,0.7)' : v >= 5000 ? 'rgba(245,158,11,0.7)' : 'rgba(239,68,68,0.7)')),
+          borderRadius: 4
+        }
+      ]
+    },
+    options: {
+      ...chartDefaults,
+      scales: {
+        ...chartDefaults.scales,
+        y: { ...chartDefaults.scales.y, min: 0, ticks: { ...chartDefaults.scales.y.ticks, callback: v => (v / 1000).toFixed(0) + 'k' } }
+      },
+      plugins: {
+        ...chartDefaults.plugins,
+        annotation: { annotations: { line1: { type: 'line', yMin: 8000, yMax: 8000, borderColor: 'rgba(16,185,129,0.3)', borderDash: [6, 4] } } }
+      }
+    }
+  });
+}
+
+// Hook into navigate to render clients section when visited
+const _origNavigate = navigate;
+function navigate(sectionId) {
+  _origNavigate(sectionId);
+  if (sectionId === 'clients') {
+    renderClientsSection();
+  }
+}
+
 // ─── INIT ────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', boot);

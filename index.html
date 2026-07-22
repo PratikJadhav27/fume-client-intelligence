@@ -9,6 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
 </head>
 <body>
 
@@ -23,7 +24,7 @@
       <div class="nav-logo-icon">🔥</div>
       FUME Intelligence
     </div>
-    <span class="nav-week-label">Week 1 · Day 1–8 · Anonymous Client</span>
+    <span class="nav-week-label" id="navClientLabel">Week 1 · Day 1–8 · Anonymous Client</span>
     <div class="nav-divider"></div>
     <div class="nav-badge pending" id="navReviewBadge">
       <div class="nav-badge-dot"></div>
@@ -34,6 +35,12 @@
 
   <!-- SIDEBAR -->
   <aside class="sidebar" id="sidebar">
+    <div class="sidebar-section-label">Clients</div>
+    <a class="sidebar-item" id="nav-clients" onclick="navigate('clients')">
+      <span class="icon">👥</span> All Clients
+      <span class="badge-count" id="clientsCount" style="background:var(--teal-dim);color:var(--teal);">3</span>
+    </a>
+
     <div class="sidebar-section-label">Overview</div>
     <a class="sidebar-item active" id="nav-summary" onclick="navigate('summary')">
       <span class="icon">📋</span> Weekly Summary
@@ -88,6 +95,31 @@
 
   <!-- MAIN CONTENT -->
   <main class="main-content">
+
+    <!-- ========================= -->
+    <!-- SECTION: ALL CLIENTS      -->
+    <!-- ========================= -->
+    <section class="page-section" id="section-clients">
+      <div class="section-header">
+        <h2>👥 Client Dashboard</h2>
+        <p>All active clients — click a card to load their intelligence report</p>
+      </div>
+      <div class="clients-grid" id="clientsGrid"></div>
+
+      <div class="section-header" style="margin-top:40px;margin-bottom:16px;">
+        <h2 style="font-size:16px;">📈 Weekly Metric Trends — Current Client</h2>
+      </div>
+      <div class="charts-grid">
+        <div class="chart-card">
+          <div class="chart-title">🌙 Sleep (hours/night)</div>
+          <canvas id="sleepChart"></canvas>
+        </div>
+        <div class="chart-card">
+          <div class="chart-title">👟 Steps per Day</div>
+          <canvas id="stepsChart"></canvas>
+        </div>
+      </div>
+    </section>
 
     <!-- ========================= -->
     <!-- SECTION: WEEKLY SUMMARY   -->
