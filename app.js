@@ -645,10 +645,27 @@ function renderReview() {
         <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">Field-level edits made by the coach. Click the ✏️ icon on any finding to correct AI errors.</div>
         <div id="editsLogContent"></div>
       </div>
+
+      <!-- FOLLOW-UP SUGGESTIONS -->
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-subtle);">
+        <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">💬 Suggested Follow-up Messages</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">AI-drafted messages the coach can send to the client. Derived from this week's risk flags and findings.</div>
+        <div id="followUpMessages"></div>
+      </div>
+
+      <!-- EXPORT REPORT -->
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-subtle);">
+        <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:10px;">📤 Export Report</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;">
+          <button class="btn-export" onclick="exportMarkdown()">⬇️ Download as Markdown</button>
+          <button class="btn-export" onclick="copyJson()">📋 Copy JSON</button>
+        </div>
+      </div>
     </div>`;
 
   updateReviewPanel();
   renderEditsLog();
+  renderFollowUps();
 }
 
 function setReviewStatus(status) {
@@ -701,6 +718,186 @@ function updateNavBadge() {
   badge.className = `nav-badge ${reviewState.status.toLowerCase()}`;
   const labels = { PENDING: 'Awaiting Review', APPROVED: 'Approved', REJECTED: 'Rejected' };
   text.textContent = labels[reviewState.status] || 'Awaiting Review';
+}
+
+// ─── FOLLOW-UP SUGGESTIONS ───────────────────────────────────
+function generateFollowUps() {
+  const msgs = [];
+
+  // Generate from risk flags
+  if (DATA.risk_flags && DATA.risk_flags.length) {
+    DATA.risk_flags.forEach(r => {
+      if (r.severity === 'CRITICAL') {
+        msgs.push({
+          tone: 'Concerned',
+          toneCls: 'tone-concerned',
+          context: r.flag.substring(0, 60) + '…',
+          text: `Hi, I wanted to check in with you personally after reviewing your data from this week. I noticed something that concerned me — ${r.flag.toLowerCase()}. How are you feeling right now? I'd love to schedule a quick call today if possible.`
+        });
+      } else if (r.severity === 'HIGH') {
+        msgs.push({
+          tone: 'Action-oriented',
+          toneCls: 'tone-action',
+          context: r.flag.substring(0, 60) + '…',
+          text: `Quick check-in on this week's progress! I noticed ${r.flag.toLowerCase()}. ${r.action_required} Let's work on this together in our next session.`
+        });
+      }
+    });
+  }
+
+  // Generate from primary recommendation
+  if (DATA.recommended_next_action?.primary) {
+    const rec = DATA.recommended_next_action.primary;
+    msgs.push({
+      tone: 'Motivational',
+      toneCls: 'tone-motivational',
+      context: 'Primary recommendation',
+      text: `Great work this week! You showed real commitment even through a tough schedule. For next week, I'd like us to focus on one thing: ${rec.action.toLowerCase()}. Small steps, big results! 💪`
+    });
+  }
+
+  // Generate from pending actions
+  const openActions = (DATA.pending_actions || []).filter(a => a.status === 'OPEN' || a.status === 'IN_PROGRESS');
+  if (openActions.length) {
+    msgs.push({
+      tone: 'Check-in',
+      toneCls: 'tone-checkin',
+      context: 'Pending actions follow-up',
+      text: `Just a friendly nudge on a couple of things we discussed: ${openActions.slice(0, 2).map(a => a.action.toLowerCase()).join('; and ')}. How is that going? Any roadblocks I can help with?`
+    });
+  }
+
+  return msgs.slice(0, 4); // max 4 suggestions
+}
+
+function renderFollowUps() {
+  const el = document.getElementById('followUpMessages');
+  if (!el) return;
+  const msgs = generateFollowUps();
+
+  if (!msgs.length) {
+    el.innerHTML = `<div style="color:var(--text-muted);font-size:13px;">No suggestions generated — approve the report first to unlock follow-up drafts.</div>`;
+    return;
+  }
+
+  el.innerHTML = msgs.map((m, i) => `
+    <div class="followup-card" id="fup-${i}">
+      <div class="followup-header">
+        <span class="tone-badge ${m.toneCls}">${m.tone}</span>
+        <span class="followup-context">${escHtml(m.context)}</span>
+        <button class="btn-copy-msg" onclick="copyMsg(${i})" title="Copy to clipboard">📋 Copy</button>
+      </div>
+      <div class="followup-text" id="fup-text-${i}">${escHtml(m.text)}</div>
+    </div>
+  `).join('');
+}
+
+function copyMsg(index) {
+  const el = document.getElementById('fup-text-' + index);
+  if (!el) return;
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    showToast('✅ Message copied to clipboard!', 'success');
+  }).catch(() => {
+    // Fallback for file:// protocol
+    const ta = document.createElement('textarea');
+    ta.value = el.textContent;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('✅ Message copied!', 'success');
+  });
+}
+
+// ─── EXPORT REPORT ───────────────────────────────────────────
+function exportMarkdown() {
+  const d = DATA;
+  const dims = d.dimensions || {};
+  const dimKeys = ['nutrition', 'exercise', 'sleep', 'water', 'symptoms', 'stress_mood', 'engagement'];
+
+  let md = `# FUME Client Intelligence Report
+**Client:** ${d.metadata.client_display_name}
+**Week:** ${d.metadata.week_label}
+**Generated:** ${new Date(d.metadata.generated_at).toLocaleDateString()}
+**Review Status:** ${reviewState.status}
+
+---
+
+## Weekly Summary
+${d.weekly_summary.text}
+
+---
+
+## Dimension Scores
+| Dimension | Score | Label |
+|-----------|-------|-------|
+`;
+
+  dimKeys.forEach(k => {
+    const dim = dims[k];
+    if (dim) md += `| ${dim.label} | ${dim.score}/100 | ${dim.score_label} |\n`;
+  });
+
+  md += `\n---\n\n## Key Findings\n`;
+  dimKeys.forEach(k => {
+    const dim = dims[k];
+    if (dim?.highlights?.length) {
+      md += `\n### ${dim.label}\n`;
+      dim.highlights.forEach(h => {
+        md += `- **[${h.type}]** ${h.finding}\n  > *Evidence:* ${h.evidence}\n`;
+      });
+    }
+  });
+
+  md += `\n---\n\n## Risk Flags\n`;
+  (d.risk_flags || []).forEach(r => {
+    md += `- 🚩 **[${r.severity}]** ${r.flag}\n  - Action: ${r.action_required}\n  - Evidence: ${r.evidence}\n\n`;
+  });
+
+  md += `\n---\n\n## Recommended Next Action\n`;
+  if (d.recommended_next_action?.primary) {
+    const p = d.recommended_next_action.primary;
+    md += `**Primary:** ${p.action}\n\n*Rationale:* ${p.rationale}\n\n`;
+    md += `**Secondary Actions:**\n`;
+    (d.recommended_next_action.secondary || []).forEach(s => {
+      md += `- ${s.action}\n`;
+    });
+  }
+
+  md += `\n---\n\n## Pending Actions\n`;
+  (d.pending_actions || []).forEach(a => {
+    md += `- [${a.status}] ${a.action} *(Owner: ${a.owner})*\n`;
+  });
+
+  if (reviewState.notes) {
+    md += `\n---\n\n## Coach Notes\n${reviewState.notes}\n`;
+  }
+
+  md += `\n---\n*Generated by FUME Client Intelligence Platform*\n`;
+
+  const blob = new Blob([md], { type: 'text/markdown' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `fume-report-${d.metadata.client_id}-${d.metadata.week_label.replace(/\s/g, '-')}.md`;
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('📄 Report downloaded as Markdown!', 'success');
+}
+
+function copyJson() {
+  const jsonStr = JSON.stringify(DATA, null, 2);
+  navigator.clipboard.writeText(jsonStr).then(() => {
+    showToast('📋 JSON copied to clipboard!', 'success');
+  }).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = jsonStr;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    showToast('📋 JSON copied!', 'success');
+  });
 }
 
 // ─── TOAST ───────────────────────────────────────────────────
