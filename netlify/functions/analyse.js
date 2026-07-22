@@ -3,7 +3,7 @@
 // Uses native fetch (Node 18+), no npm packages needed.
 
 const GEMINI_URL =
-  'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent';
+  'https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent';
 
 const SYSTEM_PROMPT = `You are a senior health coach analyst AI embedded in the FUME client intelligence platform.
 
