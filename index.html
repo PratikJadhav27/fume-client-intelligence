@@ -29,6 +29,7 @@
       <div class="nav-badge-dot"></div>
       <span id="navReviewText">Awaiting Review</span>
     </div>
+    <span class="live-badge" id="liveBadge" style="display:none;">⚡ Live Analysis</span>
   </nav>
 
   <!-- SIDEBAR -->
@@ -144,6 +145,37 @@
         <h2 style="font-size:16px;">Dimension Health Scores</h2>
       </div>
       <div class="scores-grid" id="scoresGrid"></div>
+
+      <!-- LIVE LLM ANALYSIS PANEL -->
+      <div class="llm-panel" id="llmPanel">
+        <div class="llm-panel-header">
+          <div>
+            <div class="llm-panel-title">⚡ Analyse a New Conversation</div>
+            <div class="llm-panel-subtitle">Paste any coach–client conversation to generate a live intelligence report via Gemini AI</div>
+          </div>
+          <button class="llm-toggle-btn" id="llmToggleBtn" onclick="toggleLlmPanel()">▼ Expand</button>
+        </div>
+        <div class="llm-body" id="llmBody" style="display:none;">
+          <div class="llm-dropzone" id="llmDropzone"
+            ondragover="event.preventDefault();this.classList.add('dragover')"
+            ondragleave="this.classList.remove('dragover')"
+            ondrop="handleFileDrop(event)">
+            <div class="llm-drop-icon">📂</div>
+            <div class="llm-drop-text">Drop a <strong>.txt</strong> or <strong>.md</strong> file here, or paste below</div>
+            <input type="file" id="fileInput" accept=".txt,.md" style="display:none" onchange="handleFileSelect(event)">
+            <button class="btn-browse" onclick="document.getElementById('fileInput').click()">Browse file</button>
+          </div>
+          <textarea class="llm-textarea" id="llmTextarea" placeholder="Or paste the conversation text here…" rows="8"></textarea>
+          <div class="llm-char-count" id="llmCharCount">0 characters</div>
+          <div class="llm-footer">
+            <button class="btn-analyse" id="btnAnalyse" onclick="runAnalysis()">
+              <span id="analyseLabel">🚀 Analyse with Gemini</span>
+            </button>
+            <button class="btn-reset-data" onclick="resetToEmbedded()" title="Restore the original pre-loaded demo data">↩ Restore Demo Data</button>
+          </div>
+          <div class="llm-error" id="llmError" style="display:none;"></div>
+        </div>
+      </div>
     </section>
 
     <!-- ========================= -->
