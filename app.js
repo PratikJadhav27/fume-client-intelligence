@@ -32,6 +32,10 @@ function navigate(sectionId) {
   const nav = document.getElementById('nav-' + sectionId);
   if (nav) nav.classList.add('active');
   window.scrollTo({ top: 0, behavior: 'smooth' });
+  // Render clients section on demand
+  if (sectionId === 'clients') {
+    setTimeout(renderClientsSection, 0);
+  }
 }
 
 // ─── RENDER ALL ─────────────────────────────────────────────
@@ -1263,15 +1267,6 @@ function renderTrendCharts() {
       }
     }
   });
-}
-
-// Hook into navigate to render clients section when visited
-const _origNavigate = navigate;
-function navigate(sectionId) {
-  _origNavigate(sectionId);
-  if (sectionId === 'clients') {
-    renderClientsSection();
-  }
 }
 
 // ─── INIT ────────────────────────────────────────────────────
