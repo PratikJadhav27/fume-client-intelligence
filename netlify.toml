@@ -1,0 +1,11 @@
+[build]
+  functions = "netlify/functions"
+
+# Clean API path instead of /.netlify/functions/analyse
+[[redirects]]
+  from = "/api/analyse"
+  to = "/.netlify/functions/analyse"
+  status = 200
+
+[functions]
+  node_bundler = "esbuild"

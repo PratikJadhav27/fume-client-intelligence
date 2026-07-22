@@ -1239,3 +1239,183 @@ body {
   margin-bottom: 8px;
   font-weight: 600;
 }
+
+/* ===========================
+   LLM ANALYSIS PANEL
+   =========================== */
+.llm-panel {
+  margin-top: 32px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--teal);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.llm-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  cursor: pointer;
+  gap: 16px;
+}
+
+.llm-panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.llm-panel-subtitle {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.llm-toggle-btn {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  white-space: nowrap;
+  transition: all var(--transition);
+  flex-shrink: 0;
+}
+.llm-toggle-btn:hover { border-color: var(--teal); color: var(--teal); }
+
+.llm-body {
+  padding: 0 20px 20px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.llm-dropzone {
+  border: 2px dashed var(--border-subtle);
+  border-radius: 10px;
+  padding: 24px;
+  text-align: center;
+  margin-top: 16px;
+  transition: all var(--transition);
+  cursor: pointer;
+}
+.llm-dropzone:hover, .llm-dropzone.dragover {
+  border-color: var(--teal);
+  background: var(--teal-dim);
+}
+
+.llm-drop-icon { font-size: 28px; margin-bottom: 8px; }
+.llm-drop-text { font-size: 13px; color: var(--text-muted); margin-bottom: 12px; }
+
+.btn-browse {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  transition: all var(--transition);
+}
+.btn-browse:hover { border-color: var(--teal); color: var(--teal); }
+
+.llm-textarea {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.6;
+  margin-top: 14px;
+  padding: 12px 14px;
+  resize: vertical;
+  transition: border-color var(--transition);
+  box-sizing: border-box;
+}
+.llm-textarea:focus { outline: none; border-color: var(--teal); }
+
+.llm-char-count {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-align: right;
+  margin-top: 4px;
+}
+
+.llm-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 14px;
+  flex-wrap: wrap;
+}
+
+.btn-analyse {
+  background: var(--teal);
+  border: none;
+  border-radius: 8px;
+  color: #000;
+  cursor: pointer;
+  font-family: var(--font);
+  font-size: 13px;
+  font-weight: 700;
+  padding: 10px 20px;
+  transition: all var(--transition);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.btn-analyse:hover:not(:disabled) { filter: brightness(1.1); transform: translateY(-1px); }
+.btn-analyse:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+.btn-reset-data {
+  background: transparent;
+  border: 1px dashed var(--border-subtle);
+  border-radius: 8px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 10px 16px;
+  transition: all var(--transition);
+}
+.btn-reset-data:hover { color: var(--text-secondary); border-color: var(--text-muted); }
+
+.llm-error {
+  background: var(--red-dim);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  border-radius: 8px;
+  color: var(--red);
+  font-size: 13px;
+  margin-top: 12px;
+  padding: 10px 14px;
+}
+
+/* Spinner inside button */
+.llm-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(0,0,0,0.2);
+  border-top-color: #000;
+  border-radius: 50%;
+  display: inline-block;
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* Live mode badge in nav */
+.live-badge {
+  background: linear-gradient(135deg, var(--teal), #0ea5e9);
+  color: #000;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: 20px;
+  letter-spacing: 0.3px;
+  animation: pulse 2s infinite;
+}
