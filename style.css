@@ -1131,3 +1131,111 @@ body {
     var(--bg-surface) 20px
   );
 }
+
+/* ===========================
+   INLINE EDIT SYSTEM
+   =========================== */
+.finding-item { position: relative; }
+
+.edit-btn {
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 13px;
+  padding: 3px 7px;
+  opacity: 0;
+  transition: all var(--transition);
+}
+.finding-item:hover .edit-btn { opacity: 1; }
+.edit-btn:hover { background: var(--bg-elevated); color: var(--text-primary); border-color: var(--teal); }
+
+.edited-badge {
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--amber);
+  background: var(--amber-dim);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+}
+
+.edit-zone {
+  margin: 10px 0;
+  padding: 14px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: 10px;
+  border-left: 3px solid var(--teal);
+}
+
+.edit-textarea {
+  width: 100%;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border-subtle);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: var(--font);
+  font-size: 13px;
+  line-height: 1.6;
+  padding: 10px 12px;
+  resize: vertical;
+  transition: border-color var(--transition);
+  box-sizing: border-box;
+}
+.edit-textarea:focus { outline: none; border-color: var(--teal); }
+
+.edit-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+.btn-save-edit, .btn-cancel-edit, .btn-revert-edit {
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 6px 14px;
+  transition: all var(--transition);
+}
+.btn-save-edit { background: var(--teal); color: #000; }
+.btn-save-edit:hover { filter: brightness(1.1); }
+.btn-cancel-edit { background: var(--bg-elevated); color: var(--text-secondary); border: 1px solid var(--border-subtle); }
+.btn-cancel-edit:hover { color: var(--text-primary); }
+.btn-revert-edit { background: transparent; color: var(--text-muted); border: 1px dashed var(--border-subtle); }
+.btn-revert-edit:hover { color: var(--red); border-color: var(--red); }
+
+/* Diff view */
+.diff-removed {
+  color: var(--red);
+  text-decoration: line-through;
+  font-size: 13px;
+  opacity: 0.8;
+  display: block;
+  margin-bottom: 2px;
+}
+.diff-added {
+  color: var(--green);
+  font-size: 13px;
+  font-weight: 600;
+  display: block;
+}
+
+/* Edit log in review panel */
+.edit-log-item {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-left: 3px solid var(--amber);
+  border-radius: 8px;
+  padding: 12px 14px;
+  margin-bottom: 10px;
+}
+.edit-log-meta {
+  font-size: 11px;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+  font-weight: 600;
+}

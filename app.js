@@ -98,6 +98,115 @@ function scoreColor(score) {
   return 'var(--red)';
 }
 
+// ─── INLINE EDIT SYSTEM ─────────────────────────────────────
+const EDITS_KEY = 'fume_coach_edits';
+
+function getEdits() {
+  try { return JSON.parse(localStorage.getItem(EDITS_KEY) || '{}'); } catch { return {}; }
+}
+
+function saveEdit(fieldId, original, edited) {
+  const edits = getEdits();
+  edits[fieldId] = { original, edited, timestamp: new Date().toISOString() };
+  localStorage.setItem(EDITS_KEY, JSON.stringify(edits));
+}
+
+function removeEdit(fieldId) {
+  const edits = getEdits();
+  delete edits[fieldId];
+  localStorage.setItem(EDITS_KEY, JSON.stringify(edits));
+}
+
+function findingItem(h, fieldId) {
+  const edits = getEdits();
+  const savedEdit = edits[fieldId];
+  const displayText = savedEdit ? savedEdit.edited : h.finding;
+  const isEdited = !!savedEdit;
+
+  return `
+    <div class="finding-item" id="fi-${fieldId}">
+      <div class="finding-header">
+        ${severityDot(h.severity)}
+        <div class="finding-text" id="ft-${fieldId}">
+          ${isEdited
+            ? `<span class="diff-removed">${escHtml(savedEdit.original)}</span><br><span class="diff-added">${escHtml(savedEdit.edited)}</span>`
+            : escHtml(displayText)
+          }
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;flex-shrink:0;">
+          ${typeBadge(h.type)}
+          ${isEdited ? '<span class="edited-badge">✏️ Edited</span>' : ''}
+          <button class="edit-btn" title="Edit finding" onclick="startEdit('${fieldId}', '${escHtml(displayText).replace(/'/g, "\\'")}')">✏️</button>
+        </div>
+      </div>
+      <div class="edit-zone" id="ez-${fieldId}" style="display:none;">
+        <textarea class="edit-textarea" id="eta-${fieldId}" rows="3"></textarea>
+        <div class="edit-actions">
+          <button class="btn-save-edit" onclick="commitEdit('${fieldId}', '${escHtml(h.finding).replace(/'/g, "\\'")}')">✅ Save</button>
+          <button class="btn-cancel-edit" onclick="cancelEdit('${fieldId}')">✕ Cancel</button>
+          ${isEdited ? `<button class="btn-revert-edit" onclick="revertEdit('${fieldId}')">↩ Revert to Original</button>` : ''}
+        </div>
+      </div>
+      ${evidenceBlock(h.evidence)}
+    </div>`;
+}
+
+function startEdit(fieldId, currentText) {
+  const ez = document.getElementById('ez-' + fieldId);
+  const eta = document.getElementById('eta-' + fieldId);
+  ez.style.display = 'block';
+  eta.value = currentText.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
+  eta.focus();
+}
+
+function cancelEdit(fieldId) {
+  document.getElementById('ez-' + fieldId).style.display = 'none';
+}
+
+function commitEdit(fieldId, original) {
+  const eta = document.getElementById('eta-' + fieldId);
+  const newText = eta.value.trim();
+  if (!newText || newText === original) { cancelEdit(fieldId); return; }
+  const cleanOriginal = original.replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"');
+  saveEdit(fieldId, cleanOriginal, newText);
+  const ft = document.getElementById('ft-' + fieldId);
+  ft.innerHTML = `<span class="diff-removed">${escHtml(cleanOriginal)}</span><br><span class="diff-added">${escHtml(newText)}</span>`;
+  document.getElementById('ez-' + fieldId).style.display = 'none';
+  showToast('Finding updated. View all edits in Coach Review.');
+  // Refresh edits log if review panel is open
+  const logsEl = document.getElementById('editsLogContent');
+  if (logsEl) renderEditsLog();
+}
+
+function revertEdit(fieldId) {
+  removeEdit(fieldId);
+  showToast('Edit reverted to original.');
+  // Re-render the whole section — simplest approach for static site
+  renderAll();
+}
+
+function renderEditsLog() {
+  const el = document.getElementById('editsLogContent');
+  if (!el) return;
+  const edits = getEdits();
+  const keys = Object.keys(edits);
+  if (keys.length === 0) {
+    el.innerHTML = `<div style="color:var(--text-muted);font-size:13px;padding:16px 0;">No field-level corrections yet. Open any dimension section and click the ✏️ icon on a finding to correct it.</div>`;
+    return;
+  }
+  el.innerHTML = keys.map(fid => {
+    const e = edits[fid];
+    const ts = new Date(e.timestamp).toLocaleString();
+    return `
+      <div class="edit-log-item">
+        <div class="edit-log-meta">✏️ Edited · ${ts}</div>
+        <div class="diff-removed">${escHtml(e.original)}</div>
+        <div class="diff-added">${escHtml(e.edited)}</div>
+        <button class="btn-revert-edit" onclick="revertEdit('${fid}')">↩ Revert</button>
+      </div>`;
+  }).join('');
+}
+
 function scoreRing(score, color, label) {
   const circumference = 251.2;
   const offset = circumference - (score / 100) * circumference;
@@ -188,15 +297,10 @@ function renderDimension(dimKey) {
   // Highlights
   if (d.highlights && d.highlights.length) {
     html += `<div class="section-header" style="margin-bottom:12px;"><h2 style="font-size:15px;">Key Findings</h2></div>`;
-    html += d.highlights.map(h => `
-      <div class="finding-item">
-        <div class="finding-header">
-          ${severityDot(h.severity)}
-          <div class="finding-text">${escHtml(h.finding)}</div>
-          ${typeBadge(h.type)}
-        </div>
-        ${evidenceBlock(h.evidence)}
-      </div>`).join('');
+    html += d.highlights.map((h, i) => {
+      const fieldId = `${dimKey}-h${i}`;
+      return findingItem(h, fieldId);
+    }).join('');
   }
 
   // Day-specific logs
@@ -534,9 +638,16 @@ function renderReview() {
           Always use professional judgment before acting on any recommendation. Approve this report only after verifying key findings against the original conversation.
         </div>
       </div>
+
+      <div style="margin-top:24px;padding-top:20px;border-top:1px solid var(--border-subtle);">
+        <div style="font-size:13px;font-weight:700;color:var(--text-primary);margin-bottom:4px;">✏️ Coach Corrections</div>
+        <div style="font-size:12px;color:var(--text-muted);margin-bottom:14px;">Field-level edits made by the coach. Click the ✏️ icon on any finding to correct AI errors.</div>
+        <div id="editsLogContent"></div>
+      </div>
     </div>`;
 
   updateReviewPanel();
+  renderEditsLog();
 }
 
 function setReviewStatus(status) {
