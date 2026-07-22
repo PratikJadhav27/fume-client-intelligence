@@ -444,12 +444,12 @@ function renderActions() {
   const statusMap = { OPEN: 'open', IN_PROGRESS: 'in-progress', UNKNOWN: 'unknown' };
   el.innerHTML = DATA.pending_actions.map(a => `
     <div class="action-item">
-      <div class="action-id">${a.id.replace('PA', '')}</div>
+      <div class="action-id">${(a.id || '').replace('PA', '')}</div>
       <div class="action-body">
         <div class="action-text">${escHtml(a.action)}</div>
         <div class="action-meta">
           <span class="owner-badge ${ownerMap[a.owner] || 'client'}">${a.owner}</span>
-          <span class="status-badge ${statusMap[a.status] || 'open'}">${a.status.replace('_', ' ')}</span>
+          <span class="status-badge ${statusMap[a.status] || 'open'}">${(a.status || '').replace('_', ' ')}</span>
           <span style="font-size:11px;color:var(--text-muted);">Due: ${escHtml(a.due)}</span>
         </div>
         ${evidenceBlock(a.evidence)}
@@ -482,7 +482,7 @@ function renderRisks() {
         ${severityDot(r.severity)}
         <span class="risk-severity-label">${r.severity}</span>
         ${typeBadge(r.type)}
-        <span style="font-size:10px;color:var(--text-muted);margin-left:auto;">${r.category.replace(/_/g,' ')}</span>
+        <span style="font-size:10px;color:var(--text-muted);margin-left:auto;">${(r.category || '').replace(/_/g,' ')}</span>
       </div>
       <div class="risk-flag-text">${escHtml(r.flag)}</div>
       <div class="risk-action"><strong>→ Recommended action:</strong> ${escHtml(r.action_required)}</div>
@@ -883,7 +883,7 @@ ${d.weekly_summary.text}
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = `fume-report-${d.metadata.client_id}-${d.metadata.week_label.replace(/\s/g, '-')}.md`;
+  a.download = `fume-report-${d.metadata?.client_id || 'unknown'}-${(d.metadata?.week_label || 'week').replace(/\s/g, '-')}.md`;
   a.click();
   URL.revokeObjectURL(url);
   showToast('📄 Report downloaded as Markdown!', 'success');
@@ -1004,6 +1004,7 @@ async function runAnalysis() {
     navigate('summary');
 
   } catch (err) {
+    console.error("runAnalysis error:", err);
     errEl.textContent = `❌ Analysis failed: ${err.message}`;
     errEl.style.display = 'block';
   } finally {
